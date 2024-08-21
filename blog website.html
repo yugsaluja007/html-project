@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <style>
+        
+        {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-image: url('images/download%20(2).jpeg'); 
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        header .container {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .blog-posts, .about, #contact {
+            display: none; 
+        }
+
+        .blog-posts.active, .about.active, #contact.active {
+            display: block; 
+        }
+
+        .post {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .post img.small {
+            width: 50%; 
+            max-width: 300px; 
+        }
+
+        .post h2 {
+            margin-bottom: 10px;
+        }
+
+        .post .date {
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .post p {
+            margin-bottom: 10px;
+        }
+
+        .read-more {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        footer .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        
+        .post-detail {
+            background: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            display: none;         }
+
+        .post-detail img {
+            width: 100%; 
+        }
+
+        .show {
+            display: block; 
+        }
+
+        
+        .about {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .about h2 {
+            margin-bottom: 15px;
+        }
+
+        .about p {
+            margin-bottom: 10px;
+        }
+
+        /* Styles for the Add New Blog Post Form */
+        #addPostForm {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #showFormButton {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #showFormButton:hover {
+            background: #0056b3;
+        }
+
+        /* Basic Form Styling */
+        form {
+            margin-top: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="date"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>My Blog</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home" onclick="showSection('home'); return false;">Home</a></li>
+                    <li><a href="#about" onclick="showSection('about'); return false;">About</a></li>
+                    <li><a href="#contact" onclick="showSection('contact'); return false;">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Button to Show Add Blog Post Form -->
+            <button id="showFormButton">Add New Blog Post</button>
+            
+            <!-- Form for Adding New Blog Post -->
+            <div id="addPostForm" style="display: none;">
+                <h2>Add a New Blog Post</h2>
+                <form id="blogPostForm">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" required><br><br>
+
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required><br><br>
+
+                    <label for="content">Content:</label>
+                    <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+
+                    <label for="image">Image URL:</label>
+                    <input type="text" id="image" name="image" required><br><br>
+
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+
+            <!-- Blog Posts Section -->
+            <section id="home" class="blog-posts">
+                <article class="post">
+                    <img src="images/1_k9RfojUBpDIwTtqS0vfbkQ.jpeg" alt="Blog Post Image 1" class="small"> <!-- Adjust path as needed -->
+                    <h2>Blog Post Title 1</h2>
+                    <p class="date">August 13, 2024</p>
+                    <p>The customer is very important, the customer will be followed by the customer. We live in Lacinia, and we live in hatred of the vestibule of life.</p>
+                    <a href="#" class="read-more" data-target="#post1">Read More</a> <!-- Link to detailed post -->
+                </article>
+                <article class="post">
+                    <img src="images/download.jpeg" alt="Blog Post Image 2"> <!-- Adjust path as needed -->
+                    <h2>Blog Post Title 2</h2>
+                    <p class="date">August 14, 2024</p>
+                    <p>The boat of life is not a time to drink. I chatted in just a few minutes.</p>
+                    <a href="#" class="read-more" data-target="#post2">Read More</a> <!-- Link to detailed post -->
+                </article>
+                <article class="post">
+                    <img src="images/download (1).jpeg" alt="Blog Post Image 3"> <!-- Adjust path as needed -->
+                    <h2>Blog Post Title 3</h2>
+                    <p class="date">August 13, 2024</p>
+                    <p>Echoes of inflation: unpacking the drivers of food prices in Central America</p>
+                    <a href="#" class="read-more" data-target="#post3">Read More</a> <!-- Link to detailed post -->
+                </article>
+            </section>
+
+            <!-- About section -->
+            <section id="about" class="about">
+                <h2>About Us</h2>
+                <p>Welcome to My Blog! Here, we share insights and stories on various topics that matter to us and our readers. Our goal is to provide valuable content that informs, entertains, and inspires.</p>
+                <p>Our team is composed of passionate writers and experts in their fields who are dedicated to bringing you high-quality content. Whether you're interested in technology, lifestyle, or current events, you'll find something of interest here.</p>
+                <p>Feel free to browse through our blog posts, leave comments, and connect with us through our contact page. We value your feedback and look forward to engaging with our community.</p>
+                <p>Thank you for visiting and happy reading!</p>
+            </section>
+
+            <!-- Contact section -->
+            <section id="contact">
+                <h2>Contact Us</h2>
+                <p>For inquiries, please email us at info@myblog.com or call (123) 456-7890.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 My Blog. All rights reserved.</p>
+            <div class="contact-info">
+                <p>Contact Number: (123) 456-7890</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sample blog post detail pages -->
+    <div id="post1" class="post-detail">
+        <h2>Blog Post Title 1</h2>
+        <p class="date">August 13, 2024</p>
+        <img src="C:\Users\harpr\Desktop\1_k9RfojUBpDIwTtqS0vfbkQ.jpg" alt="Blog Post Image 1"> <!-- Adjust path as needed -->
+        <p>The customer is very important, the customer will be followed by the customer. We live in Lacinia, and we live in hatred of the vestibule of life.</p>
+        <a href="#" class="read-more" onclick="showHome(); return false;">Back to Home</a>
+    </div>
+
+    <div id="post2" class="post-detail">
+        <h2>Blog Post Title 2</h2>
+        <p class="date">August 14, 2024</p>
+        <img src="C:\Users\harpr\Desktop\download.jpeg" alt="Blog Post Image 2">
+        <p>The boat of life is not a time to drink. I chatted in just a few minutes.</p>
+        <a href="#" class="read-more" onclick="showHome(); return false;">Back to Home</a>
+    </div>
+
+    <div id="post3" class="post-detail">
+        <h2>Blog Post Title 3</h2>
+        <p class="date">August 13, 2024</p>
+        <img src="C:\Users\harpr\Desktop\download (1).jpeg" alt="Blog Post Image 3"> <!-- Adjust path as needed -->
+        <p>Echoes of inflation: unpacking the drivers of food prices in Central America</p>
+        <a href="#" class="read-more" onclick="showHome(); return false;">Back to Home</a>
+    </div>
+
+    <script>
+        // Function to show a specific post detail
+        function showPost(id) {
+            // Hide all post details
+            const details = document.querySelectorAll('.post-detail');
+            details.forEach(detail => detail.classList.remove('show'));
+
+            // Show the selected post detail
+            const postDetail = document.querySelector(id);
+            if (postDetail) {
+                postDetail.classList.add('show');
+            }
+
+            // Hide the blog posts section
+            document.querySelector('.blog-posts').classList.remove('active');
+        }
+
+        // Function to show a specific section and hide others
+        function showSection(id) {
+            // Hide all sections
+            const sections = document.querySelectorAll('main > .container > section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Show the selected section
+            const section = document.querySelector(`#${id}`);
+            if (section) {
+                section.classList.add('active');
+            }
+
+            // Hide all post details
+            const details = document.querySelectorAll('.post-detail');
+            details.forEach(detail => detail.classList.remove('show'));
+
+            // Show the blog posts section if 'home' is selected
+            if (id === 'home') {
+                document.querySelector('.blog-posts').classList.add('active');
+            }
+        }
+
+        // Add event listeners to all 'Read More' links
+        document.querySelectorAll('.read-more[data-target]').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                showPost(this.getAttribute('data-target'));
+            });
+        });
+
+        // Initialize by showing the home section
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home');
+
+            // Toggle form visibility
+            const showFormButton = document.getElementById('showFormButton');
+            const addPostForm = document.getElementById('addPostForm');
+
+            showFormButton.addEventListener('click', () => {
+                if (addPostForm.style.display === 'none' || addPostForm.style.display === '') {
+                    addPostForm.style.display = 'block';
+                } else {
+                    addPostForm.style.display = 'none';
+                }
+            });
+
+            // Handle form submission
+            document.getElementById('blogPostForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                // Retrieve form values
+                const title = document.getElementById('title').value;
+                const date = document.getElementById('date').value;
+                const content = document.getElementById('content').value;
+                const image = document.getElementById('image').value;
+
+                // Here, you would typically send the data to the server.
+                // For now, we'll just log it to the console.
+                console.log('New Post Details:', { title, date, content, image });
+
+                // Hide the form after submission
+                addPostForm.style.display = 'none';
+
+                // Optionally, clear the form
+                document.getElementById('blogPostForm').reset();
+            });
+        });
+
+        // Function to show the home section
+        function showHome() {
+            showSection('home');
+        }
+    </script>
+</body>
+</html>

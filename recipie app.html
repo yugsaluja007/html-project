@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .recipe {
+            margin-bottom: 30px;
+        }
+
+        .recipe h2 {
+            margin-top: 0;
+            color: #007bff;
+        }
+
+        .recipe img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .ingredients,
+        .instructions {
+            margin-top: 20px;
+        }
+
+        .ingredients ul,
+        .instructions ol {
+            padding-left: 20px;
+        }
+
+        .ingredients li,
+        .instructions li {
+            margin-bottom: 10px;
+        }
+
+        .ingredients,
+        .instructions {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+        }
+
+        .add-recipe-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .add-recipe-button:hover {
+            background-color: #0056b3;
+        }
+
+        .recipe-form {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .recipe-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .recipe-form input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .recipe-form button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .recipe-form button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Recipe App</h1>
+
+        <!-- Recipe List -->
+        <div id="recipe-list">
+            <!-- Initial Recipes -->
+            <div class="recipe">
+                <h2>Classic Spaghetti Carbonara</h2>
+                <img src="C:\Users\harpr\Downloads\download.jpeg" alt="Spaghetti Carbonara">
+                <div class="ingredients">
+                    <h3>Ingredients:</h3>
+                    <ul>
+                        <li>200g spaghetti</li>
+                        <li>100g pancetta</li>
+                        <li>2 large eggs</li>
+                        <li>50g Pecorino Romano cheese</li>
+                        <li>2 cloves garlic</li>
+                        <li>Salt and pepper to taste</li>
+                        <li>Olive oil</li>
+                    </ul>
+                </div>
+                <div class="instructions">
+                    <h3>Instructions:</h3>
+                    <ol>
+                        <li>Cook the spaghetti in salted boiling water according to package instructions.</li>
+                        <li>In a pan, heat a small amount of olive oil and cook the garlic until fragrant.</li>
+                        <li>Add pancetta and cook until crispy.</li>
+                        <li>In a bowl, whisk together eggs and grated Pecorino Romano cheese.</li>
+                        <li>Drain the spaghetti, reserving some pasta water, and add to the pan with pancetta.</li>
+                        <li>Remove the pan from heat and quickly mix in the egg and cheese mixture.</li>
+                        <li>If needed, add a bit of reserved pasta water to achieve a creamy consistency.</li>
+                        <li>Season with salt and pepper to taste.</li>
+                        <li>Serve immediately with extra cheese if desired.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="recipe">
+                <h2>Chicken Caesar Salad</h2>
+                <img src="https://via.placeholder.com/800x400" alt="Chicken Caesar Salad">
+                <div class="ingredients">
+                    <h3>Ingredients:</h3>
+                    <ul>
+                        <li>2 chicken breasts</li>
+                        <li>1 romaine lettuce</li>
+                        <li>50g Parmesan cheese</li>
+                        <li>Croutons</li>
+                        <li>Caesar dressing</li>
+                        <li>Salt and pepper to taste</li>
+                    </ul>
+                </div>
+                <div class="instructions">
+                    <h3>Instructions:</h3>
+                    <ol>
+                        <li>Season chicken breasts with salt and pepper and cook until fully cooked, then slice.</li>
+                        <li>Chop the romaine lettuce and place it in a large bowl.</li>
+                        <li>Add croutons and Parmesan cheese to the lettuce.</li>
+                        <li>Top with sliced chicken breasts and drizzle with Caesar dressing.</li>
+                        <li>Toss everything together and serve immediately.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add More Recipe Section -->
+        <div class="recipe-form" id="recipe-form">
+            <h2>Add a New Recipe</h2>
+            <input type="text" id="recipe-title" placeholder="Recipe Title" />
+            <textarea id="recipe-ingredients" placeholder="Ingredients (one per line)"></textarea>
+            <textarea id="recipe-instructions" placeholder="Instructions (one per step)"></textarea>
+            <button onclick="addRecipe()">Add Recipe</button>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Recipe App. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        function addRecipe() {
+            // Get input values
+            const title = document.getElementById('recipe-title').value.trim();
+            const ingredients = document.getElementById('recipe-ingredients').value.trim().split('\n');
+            const instructions = document.getElementById('recipe-instructions').value.trim().split('\n');
+
+            if (!title || ingredients.length === 0 || instructions.length === 0) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            // Create new recipe section
+            const recipeList = document.getElementById('recipe-list');
+
+            const newRecipe = document.createElement('div');
+            newRecipe.classList.add('recipe');
+
+            newRecipe.innerHTML = `
+                <h2>${title}</h2>
+                <img src="https://via.placeholder.com/800x400" alt="${title}">
+                <div class="ingredients">
+                    <h3>Ingredients:</h3>
+                    <ul>
+                        ${ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="instructions">
+                    <h3>Instructions:</h3>
+                    <ol>
+                        ${instructions.map(instruction => `<li>${instruction}</li>`).join('')}
+                    </ol>
+                </div>
+            `;
+
+            // Append the new recipe to the recipe list
+            recipeList.appendChild(newRecipe);
+
+            // Clear the form fields
+            document.getElementById('recipe-title').value = '';
+            document.getElementById('recipe-ingredients').value = '';
+            document.getElementById('recipe-instructions').value = '';
+        }
+    </script>
+</body>
+</html>

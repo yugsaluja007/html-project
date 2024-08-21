@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Scientific Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .calculator {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 440px;
+        }
+
+        .display {
+            background-color: #333;
+            color: white;
+            text-align: right;
+            padding: 20px;
+            font-size: 1.5em;
+            border-bottom: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 1px;
+        }
+
+        button {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #f0f0f0;
+        }
+
+        button:active {
+            background-color: #ccc;
+        }
+
+        .operator {
+            background-color: #f76c6c;
+            color: white;
+        }
+
+        .operator:hover {
+            background-color: #f75555;
+        }
+
+        .operator:active {
+            background-color: #e14f4f;
+        }
+
+        .equals {
+            background-color: #4caf50;
+            color: white;
+            grid-column: span 2;
+        }
+
+        .equals:hover {
+            background-color: #45a049;
+        }
+
+        .equals:active {
+            background-color: #388e3c;
+        }
+
+        .function {
+            background-color: #e0e0e0;
+        }
+
+        .function:hover {
+            background-color: #d0d0d0;
+        }
+
+        .special {
+            background-color: #f0f0f0;
+        }
+
+        .special:hover {
+            background-color: #d0d0d0;
+        }
+
+        .zero {
+            grid-column: span 2;
+        }
+
+        .dot {
+            background-color: #e0e0e0;
+        }
+
+        .dot:hover {
+            background-color: #d0d0d0;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="btn special" data-value="C">C</button>
+            <button class="btn special" data-value="±">±</button>
+            <button class="btn special" data-value="(">(</button>
+            <button class="btn special" data-value=")">)</button>
+            <button class="btn operator" data-value="/">/</button>
+
+            <button class="btn function" data-value="√">√</button>
+            <button class="btn function" data-value="x²">x²</button>
+            <button class="btn function" data-value="%">%</button>
+            <button class="btn operator" data-value="*">*</button>
+
+            <button class="btn function" data-value="sin">sin</button>
+            <button class="btn function" data-value="cos">cos</button>
+            <button class="btn function" data-value="tan">tan</button>
+            <button class="btn operator" data-value="-">-</button>
+
+            <button class="btn function" data-value="log">log</button>
+            <button class="btn function" data-value="ln">ln</button>
+            <button class="btn function" data-value="exp">exp</button>
+            <button class="btn operator" data-value="+">+</button>
+
+            <button class="btn function" data-value="!">!</button>
+            <button class="btn function" data-value="^">^</button>
+            <button class="btn function" data-value="deg">deg</button>
+            <button class="btn equals" data-value="=">=</button>
+
+            <button class="btn digit zero" data-value="0">0</button>
+            <button class="btn digit" data-value="1">1</button>
+            <button class="btn digit" data-value="2">2</button>
+            <button class="btn digit" data-value="3">3</button>
+
+            <button class="btn digit" data-value="4">4</button>
+            <button class="btn digit" data-value="5">5</button>
+            <button class="btn digit" data-value="6">6</button>
+            <button class="btn dot" data-value=".">.</button>
+
+            <button class="btn digit" data-value="7">7</button>
+            <button class="btn digit" data-value="8">8</button>
+            <button class="btn digit" data-value="9">9</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const display = document.getElementById('display');
+            const buttons = document.querySelectorAll('.btn');
+
+            let currentInput = '';
+            let operator = '';
+            let firstOperand = '';
+            let angleMode = 'rad';  // 'rad' or 'deg'
+            let memory = 0;
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const value = button.getAttribute('data-value');
+
+                    if (value === 'C') {
+                        currentInput = '';
+                        operator = '';
+                        firstOperand = '';
+                        display.textContent = '0';
+                    } else if (value === '±') {
+                        currentInput = (parseFloat(currentInput) * -1).toString();
+                        display.textContent = currentInput;
+                    } else if (value === '=') {
+                        try {
+                            // Handle parentheses
+                            let expression = currentInput;
+                            if (expression) {
+                                if (angleMode === 'deg') {
+                                    expression = expression.replace(/sin/g, 'Math.sin').replace(/cos/g, 'Math.cos').replace(/tan/g, 'Math.tan');
+                                    expression = expression.replace(/Math.(sin|cos|tan)\(([^)]+)\)/g, (_, func, arg) => {
+                                        return `Math.${func}(${arg} * (Math.PI / 180))`;
+                                    });
+                                } else {
+                                    expression = expression.replace(/sin/g, 'Math.sin').replace(/cos/g, 'Math.cos').replace(/tan/g, 'Math.tan');
+                                }
+                                currentInput = eval(expression).toString();
+                            }
+                        } catch (e) {
+                            currentInput = 'Error';
+                        }
+                        display.textContent = currentInput;
+                    } else if (['+', '-', '*', '/'].includes(value)) {
+                        if (firstOperand && operator) {
+                            try {
+                                currentInput = eval(`${firstOperand}${operator}${currentInput}`).toString();
+                            } catch (e) {
+                                currentInput = 'Error';
+                            }
+                            display.textContent = currentInput;
+                        }
+                        operator = value;
+                        firstOperand = currentInput;
+                        currentInput = '';
+                    } else if (['√', 'x²', '%', 'log', 'ln', 'exp'].includes(value)) {
+                        try {
+                            switch (value) {
+                                case '√':
+                                    currentInput = Math.sqrt(parseFloat(currentInput)).toString();
+                                    break;
+                                case 'x²':
+                                    currentInput = Math.pow(parseFloat(currentInput), 2).toString();
+                                    break;
+                                case '%':
+                                    currentInput = (parseFloat(currentInput) / 100).toString();
+                                    break;
+                                case 'log':
+                                    currentInput = Math.log10(parseFloat(currentInput)).toString();
+                                    break;
+                                case 'ln':
+                                    currentInput = Math.log(parseFloat(currentInput)).toString();
+                                    break;
+                                case 'exp':
+                                    currentInput = Math.exp(parseFloat(currentInput)).toString();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } catch (e) {
+                            currentInput = 'Error';
+                        }
+                        display.textContent = currentInput;
+                    } else if (value === '!') {
+                        try {
+                            const num = parseInt(currentInput, 10);
+                            currentInput = factorial(num).toString();
+                        } catch (e) {
+                            currentInput = 'Error';
+                        }
+                        display.textContent = currentInput;
+                    } else if (value === '^') {
+                        operator = '**';
+                        firstOperand = currentInput;
+                        currentInput = '';
+                    } else if (value === 'deg') {
+                        angleMode = angleMode === 'rad' ? '

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Add style/CSS -->
+    <style>
+        body {
+            text-align: center;
+            background: #00ecb9;
+            font-family: sans-serif;
+            font-weight: 100;
+        }
+
+        /* Styling for heading */
+        h1 {
+            color: #396;
+            font-weight: 100;
+            font-size: 40px;
+            margin: 40px 0px 20px;
+        }
+        #clockdiv {
+            font-family: sans-serif;
+            color: #fff;
+            display: inline-block;
+            font-weight: 100;
+            text-align: center;
+            font-size: 30px;
+        }
+        #clockdiv > div {
+            padding: 10px;
+            border-radius: 3px;
+            background: #00bf96;
+            display: inline-block;
+        }
+        #clockdiv div > span {
+            padding: 15px;
+            border-radius: 3px;
+            background: #00816a;
+            display: inline-block;
+        }
+
+        /* Style for visible text */
+        .smalltext {
+            padding-top: 5px;
+            font-size: 16px;
+        }
+
+        /* Styling for controls */
+        .controls {
+            margin-top: 20px;
+        }
+
+        .controls input,
+        .controls button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        .controls input {
+            width: 80px;
+        }
+
+        .controls button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+
+        .controls .reset-button {
+            background-color: #dc3545;
+        }
+
+        .controls .reset-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Title or heading -->
+    <h1>Countdown Clock</h1>
+    <div id="clockdiv">
+        <div>
+            <!-- Show No. of days -->
+            <span class="days" id="day"></span>
+            <div class="smalltext">Days</div>
+        </div>
+        <div>
+            <!-- Show no. of hours -->
+            <span class="hours" id="hour"></span>
+            <div class="smalltext">Hours</div>
+        </div>
+        <div>
+            <!-- Show no. of minutes -->
+            <span class="minutes" id="minute"></span>
+            <div class="smalltext">Minutes</div>
+        </div>
+        <div>
+            <!-- Show seconds -->
+            <span class="seconds" id="second"></span>
+            <div class="smalltext">Seconds</div>
+        </div>
+    </div>
+    <p id="demo"></p>
+
+    <!-- Adding JavaScript code -->
+    <div class="controls">
+        <input type="number" id="addDays" placeholder="Days" min="0">
+        <input type="number" id="addHours" placeholder="Hours" min="0" max="23">
+        <input type="number" id="addMinutes" placeholder="Minutes" min="0" max="59">
+        <input type="number" id="addSeconds" placeholder="Seconds" min="0" max="59">
+        <button onclick="addTime()">Add Time</button>
+        <button onclick="resetCountdown()" class="reset-button">Reset</button>
+    </div>
+
+    <script>
+        let deadline = new Date("Dec 31, 2023 15:37:25").getTime();
+        const initialDeadline = deadline;
+
+        function updateClock() {
+            let now = new Date().getTime();
+            let t = deadline - now;
+
+            let days = Math.floor(t / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((t % (1000 * 60)) / 1000);
+
+            document.getElementById("day").innerHTML = days;
+            document.getElementById("hour").innerHTML = hours;
+            document.getElementById("minute").innerHTML = minutes;
+            document.getElementById("second").innerHTML = seconds;
+
+            if (t < 0) {
+                clearInterval(x);
+                document.getElementById("demo").innerHTML = "TIME UP";
+                document.getElementById("day").innerHTML = "0";
+                document.getElementById("hour").innerHTML = "0";
+                document.getElementById("minute").innerHTML = "0";
+                document.getElementById("second").innerHTML = "0";
+            }
+        }
+
+        let x = setInterval(updateClock, 1000);
+
+        function addTime() {
+            const daysToAdd = parseInt(document.getElementById("addDays").value) || 0;
+            const hoursToAdd = parseInt(document.getElementById("addHours").value) || 0;
+            const minutesToAdd = parseInt(document.getElementById("addMinutes").value) || 0;
+            const secondsToAdd = parseInt(document.getElementById("addSeconds").value) || 0;
+
+            const millisecondsToAdd = (daysToAdd * 24 * 60 * 60 * 1000) +
+                                      (hoursToAdd * 60 * 60 * 1000) +
+                                      (minutesToAdd * 60 * 1000) +
+                                      (secondsToAdd * 1000);
+
+            deadline += millisecondsToAdd;
+
+            document.getElementById("addDays").value = "";
+            document.getElementById("addHours").value = "";
+            document.getElementById("addMinutes").value = "";
+            document.getElementById("addSeconds").value = "";
+        }
+
+        function resetCountdown() {
+            deadline = initialDeadline;
+        }
+    </script>
+</body>
+</html>
